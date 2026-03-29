@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Lisää elokuva</title>
+</head>
+
+<body>
+  <h1>Lisää elokuva</h1> 
+  <form action="/create_movie" method="post">
+    <p>
+      Elokuvan nimi: <br />
+      <input type="text" name="title" />
+    </p>
+    <p>
+      Genre: <br />
+      <input type="text" name="genre" />
+    </p>
+    <p>
+      Kesto minuutteina: <br />
+      <input type="number" name="duration" />
+    </p>
+    <input type="submit" value="Lisää elokuva" />
+  </form>
+</body>
+
+</html>
