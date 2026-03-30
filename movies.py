@@ -31,3 +31,11 @@ def update_movie(movie_id, title, genre, duration):
 def remove_movie(movie_id):
     sql = "DELETE FROM movies Where id = ?"
     db.execute(sql, [movie_id])
+
+def find_movies(query):
+    sql = """SELECT id, title
+             FROM movies
+             WHERE title LIKE ? OR genre LIKE ?
+             ORDER BY id DESC"""
+    like = "%" + query + "%"
+    return db.query(sql, [like, like])
