@@ -34,6 +34,22 @@ def create_movie():
 
     return redirect("/")
 
+@app.route("/edit_movie/<int:movie_id>")
+def edit_movie(movie_id):
+    movie = movies.get_movie(movie_id)
+    return render_template("edit_movie.html", movie = movie)
+
+@app.route("/update_movie", methods=["POST"])
+def update_movie():
+    movie_id = request.form["movie_id"]
+    title = request.form["title"]
+    genre = request.form["genre"]
+    duration = request.form["duration"]
+
+    movies.update_movie(movie_id, title, genre, duration)
+
+    return redirect("/movie/" + str(movie_id))
+
 @app.route("/register")
 def register():
     return render_template("register.html")
