@@ -5,6 +5,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 import config
 import db
 import movies
+import re
 
 app = Flask(__name__)
 app.secret_key = config.secret_key
@@ -45,8 +46,14 @@ def create_movie():
     require_login()
 
     title = request.form["title"]
+    if not title or len(title) > 50:
+        abort(403)
     genre = request.form["genre"]
+    if not genre or len(genre) > 50:
+        abort(403)
     duration = request.form["duration"]
+    if not re.search("^[1-9][0-9]{0,3}$", duration):
+        abort(403)
     user_id = session["user_id"]
 
     movies.add_movie(title, genre, duration, user_id)

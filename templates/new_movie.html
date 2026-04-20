@@ -10,15 +10,15 @@
   <form action="/create_movie" method="post">
     <p>
       Elokuvan nimi: <br />
-      <input type="text" name="title" />
+      <input type="text" name="title" maxlength="50" required />
     </p>
     <p>
       Genre: <br />
-      <input type="text" name="genre" />
+      <input type="text" name="genre" maxlength="50" required />
     </p>
     <p>
       Kesto minuutteina: <br />
-      <input type="number" name="duration" />
+      <input type="number" name="duration" required />
     </p>
     <input type="submit" value="Lisää elokuva" />
   </form>
