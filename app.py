@@ -81,8 +81,14 @@ def update_movie():
         abort(403)
 
     title = request.form["title"]
+    if not title or len(title) > 50:
+        abort(403)
     genre = request.form["genre"]
+    if not genre or len(genre) > 50:
+        abort(403)
     duration = request.form["duration"]
+    if not re.search("^[1-9][0-9]{0,3}$", duration):
+        abort(403)
 
     movies.update_movie(movie_id, title, genre, duration)
 
