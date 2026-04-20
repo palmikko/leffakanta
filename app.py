@@ -6,6 +6,7 @@ import config
 import db
 import movies
 import re
+import users
 
 app = Flask(__name__)
 app.secret_key = config.secret_key
@@ -18,6 +19,14 @@ def require_login():
 def index():
     all_movies = movies.get_movies()
     return render_template("index.html", movies=all_movies)
+
+@app.route("/user/<int:user_id>")
+def show_user(user_id):
+    user = users.get_user(user_id)
+    if not user:
+        abort(404)
+    movies = users.get_movies(user_id)
+    return render_template("show_user.html", user=user, movies=movies)
 
 @app.route("/find_movie")
 def find_movie():

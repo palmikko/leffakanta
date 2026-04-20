@@ -20,7 +20,7 @@
     Kesto: {{ movie.duration }} min
   </p>
   <p>
-    Lisääjä: {{ movie.username }}
+    Lisääjä: <a href="/user/{{ movie.user_id }}">{{ movie.username }}</a>
   </p>
   <p>
     <a href="/">Takaisin</a>

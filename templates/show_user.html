@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Käyttäjä {{ user.username }}</title>
+</head>
+
+<body>
+  <h1>Käyttäjä {{ user.username }}</h1>
+  <p>
+    Käyttäjällä yhteensä {{ movies | count }} elokuvaa.
+  </p>
+  <h2>Elokuvat</h2>
+  <ul>
+    {% for movie in movies %}
+    <li><a href="/movie/{{ movie.id }}">{{ movie.title }}</a></li>
+    {% endfor %}
+  </ul>
+  <p>
+    <a href="/">Takaisin</a>
+  </p>
+</body>
+
+</html>
