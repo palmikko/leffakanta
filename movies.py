@@ -1,9 +1,19 @@
 import db
 
-def add_movie(title, genre, duration, user_id):
-        sql = """INSERT INTO movies (title, genre, duration, user_id)
-                 VALUES (?, ?, ?, ?)"""
-        db.execute(sql, [title, genre, duration, user_id])
+def add_movie(title, genre, duration, user_id, classes):
+    sql = """INSERT INTO movies (title, genre, duration, user_id)
+             VALUES (?, ?, ?, ?)"""
+    db.execute(sql, [title, genre, duration, user_id])
+
+    movie_id = db.last_insert_id()
+
+    sql = "INSERT INTO movie_classes (movie_id, title, value) VALUES (?, ?, ?)"
+    for title, value in classes:
+        db.execute(sql, [movie_id, title, value])
+
+def get_classes(movie_id):
+    sql = "SELECT title, value FROM movie_classes WHERE movie_id = ?"
+    return db.query(sql, [movie_id])
 
 def get_movies():
     sql = "SELECT id, title FROM movies ORDER BY id DESC"
