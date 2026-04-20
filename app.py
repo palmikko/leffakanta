@@ -48,7 +48,8 @@ def show_movie(movie_id):
 @app.route("/new_movie")
 def new_movie():
     require_login()
-    return render_template("new_movie.html")
+    classes = movies.get_all_classes()
+    return render_template("new_movie.html", classes=classes)
 
 @app.route("/create_movie", methods=["GET", "POST"])
 def create_movie():
@@ -66,12 +67,10 @@ def create_movie():
     user_id = session["user_id"]
 
     classes = []
-    grade = request.form["grade"]
-    if grade:
-        classes.append(("Arvosana", grade))
-    language = request.form["language"]
-    if language:
-        classes.append(("Kieli", language))
+    for entry in request.form.getlist("classes"):
+        if entry:
+            parts = entry.split(":")
+            classes.append((parts[0], parts[1]))
 
     movies.add_movie(title, genre, duration, user_id, classes)
 

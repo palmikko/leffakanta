@@ -20,28 +20,19 @@
       Kesto minuutteina: <br />
       <input type="number" name="duration" required />
     </p>
+    {% for class in classes %}
     <p>
-      Arvosana: <br />
-      <select name="grade">
-        <option value="1">1</option>
-        <option value="2">2</option>
-        <option value="3">3</option>
-        <option value="4">4</option>
-        <option value="5">5</option>
+      {{ class }}: <br />
+      <select name="classes">
+        <option value="">(valitse)</option>
+      {% for option in classes[class] %}
+        <option value="{{ class }}:{{ option }}">{{ option }}</option>
+      {% endfor %}
       </select>
     </p>
-    <p>
-      Kieli: <br />
-      <select name="language">
-        <option value="Suomi">Suomi</option>
-        <option value="Englanti">Englanti</option>
-        <option value="Ruotsi">Ruotsi</option>
-        <option value="Ranska">Ranska</option>
-        <option value="Muu">Muu</option>
-      </select>
-    </p>
+    {% endfor %}
     <input type="submit" value="Lisää elokuva" />
-  </form>
+    </form>
 </body>
 
 </html>
