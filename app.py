@@ -66,11 +66,17 @@ def create_movie():
         abort(403)
     user_id = session["user_id"]
 
+    all_classes = movies.get_all_classes()
+
     classes = []
     for entry in request.form.getlist("classes"):
         if entry:
-            parts = entry.split(":")
-            classes.append((parts[0], parts[1]))
+            class_title, class_value = entry.split(":")
+            if class_title not in all_classes:
+                abort(403)
+            if class_value not in all_classes[class_title]:
+                abort(403)
+            classes.append((class_title, class_value))
 
     movies.add_movie(title, genre, duration, user_id, classes)
 
@@ -115,11 +121,17 @@ def update_movie():
     if not re.search("^[1-9][0-9]{0,3}$", duration):
         abort(403)
 
+    all_classes = movies.get_all_classes()
+
     classes = []
     for entry in request.form.getlist("classes"):
         if entry:
-            parts = entry.split(":")
-            classes.append((parts[0], parts[1]))
+            class_title, class_value = entry.split(":")
+            if class_title not in all_classes:
+                abort(403)
+            if class_value not in all_classes[class_title]:
+                abort(403)
+            classes.append((class_title, class_value))
 
     movies.update_movie(movie_id, title, genre, duration, classes)
 
