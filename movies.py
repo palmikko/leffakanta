@@ -23,6 +23,18 @@ def add_movie(title, genre, duration, user_id, classes):
     for title, value in classes:
         db.execute(sql, [movie_id, title, value])
 
+def add_comment(movie_id, user_id, comment):
+    sql = """INSERT INTO comments (movie_id, user_id, comment)
+             VALUES (?, ?, ?)"""
+    db.execute(sql, [movie_id, user_id, comment])
+
+def get_comments(movie_id):
+    sql = """SELECT comments.comment, users.id user_id, users.username
+             FROM comments, users
+             WHERE comments.movie_id = ? AND comments.user_id = users.id
+             ORDER BY comments.id DESC"""
+    return db.query(sql, [movie_id])
+
 def get_classes(movie_id):
     sql = "SELECT title, value FROM movie_classes WHERE movie_id = ?"
     return db.query(sql, [movie_id])

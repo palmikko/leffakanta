@@ -43,7 +43,8 @@ def show_movie(movie_id):
     if not movie:
         abort(404)
     classes = movies.get_classes(movie_id)
-    return render_template("show_movie.html", movie=movie, classes=classes)
+    comments = movies.get_comments(movie_id)
+    return render_template("show_movie.html", movie=movie, classes=classes, comments=comments)
 
 @app.route("/new_movie")
 def new_movie():
@@ -81,6 +82,23 @@ def create_movie():
     movies.add_movie(title, genre, duration, user_id, classes)
 
     return redirect("/")
+
+@app.route("/create_comment", methods=["GET", "POST"])
+def create_comment():
+    require_login()
+
+    comment = request.form["comment"]
+    if not comment or len(comment) > 50:
+        abort(403)
+    movie_id = request.form["movie_id"]
+    movie = movies.get_movie(movie_id)
+    if not movie:
+        abort(403)
+    user_id = session["user_id"]
+
+    movies.add_comment(movie_id, user_id, comment)
+
+    return redirect("/movie/" + str(movie_id))
 
 @app.route("/edit_movie/<int:movie_id>")
 def edit_movie(movie_id):
