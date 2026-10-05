@@ -165,6 +165,22 @@ def add_image():
     movies.add_image(movie_id, image)
     return redirect("/images/" + str(movie_id))
 
+@app.route("/remove_images", methods=["POST"])
+def remove_images():
+    require_login()
+
+    movie_id = request.form["movie_id"]
+    movie = movies.get_movie(movie_id)
+    if not movie:
+        abort(404)
+    if movie["user_id"] != session["user_id"]:
+        abort(403)
+
+    for image_id in request.form.getlist("image_id"):
+        movies.remove_image(movie_id, image_id)
+
+    return redirect("/images/" + str(movie_id))
+
 @app.route("/update_movie", methods=["POST"])
 def update_movie():
     require_login()
