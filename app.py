@@ -270,7 +270,7 @@ def login():
         if user_id:
             session["user_id"] = user_id
             session["username"] = username
-            return redirect("/login")
+            return redirect("/")
         else:
             return "VIRHE: väärä tunnus tai salasana"
 
@@ -278,4 +278,4 @@ def login():
 def logout():
     del session["user_id"]
     del session["username"]
-    return redirect("/login")
+    return redirect("/")
