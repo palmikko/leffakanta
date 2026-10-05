@@ -1,6 +1,6 @@
 import sqlite3
 from flask import Flask
-from flask import abort, redirect, render_template, request, session
+from flask import abort, make_response, redirect, render_template, request, session
 import config
 import db
 import movies
@@ -44,7 +44,18 @@ def show_movie(movie_id):
         abort(404)
     classes = movies.get_classes(movie_id)
     comments = movies.get_comments(movie_id)
-    return render_template("show_movie.html", movie=movie, classes=classes, comments=comments)
+    images = movies.get_images(movie_id)
+    return render_template("show_movie.html", movie=movie, classes=classes, comments=comments, images=images)
+
+@app.route("/image/<int:image_id>")
+def show_image(image_id):
+    image = movies.get_image(image_id)
+    if not image:
+        abort(404)
+
+    response = make_response(bytes(image))
+    response.headers.set("Content-Type", "image/png")
+    return response
 
 @app.route("/new_movie")
 def new_movie():
@@ -118,6 +129,41 @@ def edit_movie(movie_id):
 
     return render_template("edit_movie.html", movie=movie, classes=classes,
     all_classes=all_classes)
+
+@app.route("/images/<int:movie_id>")
+def edit_images(movie_id):
+    require_login()
+    movie = movies.get_movie(movie_id)
+    if not movie:
+        abort(404)
+    if movie["user_id"] != session["user_id"]:
+        abort(403)
+
+    images = movies.get_images(movie_id)
+
+    return render_template("images.html", movie=movie, images=images)
+
+@app.route("/add_image", methods=["POST"])
+def add_image():
+    require_login()
+
+    movie_id = request.form["movie_id"]
+    movie = movies.get_movie(movie_id)
+    if not movie:
+        abort(404)
+    if movie["user_id"] != session["user_id"]:
+        abort(403)
+
+    file = request.files["image"]
+    if not file.filename.endswith(".png"):
+        return "VIRHE: väärä tiedostomuoto"
+
+    image = file.read()
+    if len(image) > 100 * 1024:
+        return "VIRHE: liian suuri kuva"
+
+    movies.add_image(movie_id, image)
+    return redirect("/images/" + str(movie_id))
 
 @app.route("/update_movie", methods=["POST"])
 def update_movie():

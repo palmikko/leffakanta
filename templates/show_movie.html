@@ -11,8 +11,12 @@
   <p>
     <a href="/edit_movie/{{ movie.id }}">Muokkaa</a>
     <a href="/remove_movie/{{ movie.id }}">Poista</a>
+    <a href="/images/{{ movie.id }}">Kuvat</a>
   </p>
     {% endif %}
+    {% for image in images %}
+    <img src="/image/{{ image.id }}" />
+    {% endfor %}
   <p>
     Genre: {{ movie.genre }}
   </p>

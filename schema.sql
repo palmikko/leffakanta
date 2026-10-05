@@ -31,3 +31,9 @@ CREATE TABLE movie_classes (
     title TEXT,
     value TEXT
 );
+
+CREATE TABLE images (
+    id INTEGER PRIMARY KEY,
+    movie_id INTEGER REFERENCES movies,
+    image BLOB
+);
