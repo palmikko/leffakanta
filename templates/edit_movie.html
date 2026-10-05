@@ -1,46 +1,38 @@
-<!DOCTYPE html>
-<html>
+{% extends "layout.html" %}
 
-<head>
-  <title>Tietojen muokkaus</title>
-</head>
+{% block title %}Muokkaa elokuvan tietoja{% endblock %}
 
-<body>
-  <h1>Muokkaa elokuvan tietoja</h1> 
-  <form action="/update_movie" method="post">
-    <p>
-      Elokuvan nimi: <br />
-      <input type="text" name="title" value="{{ movie.title }}" maxlength="50" required />
-    </p>
-    <p>
-      Genre: <br />
-      <input type="text" name="genre" value="{{ movie.genre }}" maxlength="50" required />
-    </p>
-    <p>
-      Kesto minuutteina: <br />
-      <input type="number" name="duration" value="{{ movie.duration }}"/>
-    </p>
-    <input type="hidden" name="movie_id" value="{{ movie.id }}"/>
-    {% for class in all_classes %}
-    <p>
-      {{ class }}: <br />
-      <select name="classes">
-        <option value="">(valitse)</option>
-      {% for option in all_classes[class] %}
-        {% if classes[class] == option %}
-        <option value="{{ class }}:{{ option }}" selected>{{ option }}</option>
-        {% else %}
-        <option value="{{ class }}:{{ option }}">{{ option }}</option>
-        {% endif %}
-      {% endfor %}
-      </select>
-    </p>
-    {% endfor %}
-    <input type="submit" value="Päivitä tiedot" />
+{% block content %}
+<h2>Muokkaa elokuvan tietoja</h2>
+<form action="/update_movie" method="post">
   <p>
-    <a href="/">Takaisin</a>
+    Elokuvan nimi: <br />
+    <input type="text" name="title" value="{{ movie.title }}" maxlength="50" required />
   </p>
-  </form>
-</body>
-
-</html>
+  <p>
+    Genre: <br />
+    <input type="text" name="genre" value="{{ movie.genre }}" maxlength="50" required />
+  </p>
+  <p>
+    Kesto minuutteina: <br />
+    <input type="number" name="duration" value="{{ movie.duration }}"/>
+  </p>
+  <input type="hidden" name="movie_id" value="{{ movie.id }}"/>
+  {% for class in all_classes %}
+  <p>
+    {{ class }}: <br />
+    <select name="classes">
+      <option value="">(valitse)</option>
+    {% for option in all_classes[class] %}
+      {% if classes[class] == option %}
+      <option value="{{ class }}:{{ option }}" selected>{{ option }}</option>
+      {% else %}
+      <option value="{{ class }}:{{ option }}">{{ option }}</option>
+      {% endif %}
+    {% endfor %}
+    </select>
+  </p>
+  {% endfor %}
+  <input type="submit" value="Päivitä tiedot" />
+</form>
+{% endblock %}

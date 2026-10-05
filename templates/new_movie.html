@@ -1,38 +1,33 @@
-<!DOCTYPE html>
-<html>
+{% extends "layout.html" %}
 
-<head>
-  <title>Lisää elokuva</title>
-</head>
+{% block title %}Lisää elokuva{% endblock %}
 
-<body>
-  <h1>Lisää elokuva</h1> 
-  <form action="/create_movie" method="post">
-    <p>
-      Elokuvan nimi: <br />
-      <input type="text" name="title" maxlength="50" required />
-    </p>
-    <p>
-      Genre: <br />
-      <input type="text" name="genre" maxlength="50" required />
-    </p>
-    <p>
-      Kesto minuutteina: <br />
-      <input type="number" name="duration" required />
-    </p>
-    {% for class in classes %}
-    <p>
-      {{ class }}: <br />
-      <select name="classes">
-        <option value="">(valitse)</option>
-      {% for option in classes[class] %}
-        <option value="{{ class }}:{{ option }}">{{ option }}</option>
-      {% endfor %}
-      </select>
-    </p>
+{% block content %}
+<h2>Lisää elokuva</h2>
+<form action="/create_movie" method="post">
+  <p>
+    Elokuvan nimi: <br />
+    <input type="text" name="title" maxlength="50" required />
+  </p>
+  <p>
+    Genre: <br />
+    <input type="text" name="genre" maxlength="50" required />
+  </p>
+  <p>
+    Kesto minuutteina: <br />
+    <input type="number" name="duration" required />
+  </p>
+  {% for class in classes %}
+  <p>
+    {{ class }}: <br />
+    <select name="classes">
+      <option value="">(valitse)</option>
+    {% for option in classes[class] %}
+      <option value="{{ class }}:{{ option }}">{{ option }}</option>
     {% endfor %}
-    <input type="submit" value="Lisää elokuva" />
-    </form>
-</body>
-
-</html>
+    </select>
+  </p>
+  {% endfor %}
+  <input type="submit" value="Lisää elokuva" />
+  </form>
+{% endblock %}

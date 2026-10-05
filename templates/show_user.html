@@ -1,24 +1,16 @@
-<!DOCTYPE html>
-<html>
+{% extends "layout.html" %}
 
-<head>
-  <title>Käyttäjä {{ user.username }}</title>
-</head>
+{% block title %}Käyttäjä {{ user.username }}{% endblock %}
 
-<body>
-  <h1>Käyttäjä {{ user.username }}</h1>
-  <p>
-    Käyttäjällä yhteensä {{ movies | count }} elokuvaa.
-  </p>
-  <h2>Elokuvat</h2>
-  <ul>
-    {% for movie in movies %}
-    <li><a href="/movie/{{ movie.id }}">{{ movie.title }}</a></li>
-    {% endfor %}
-  </ul>
-  <p>
-    <a href="/">Takaisin</a>
-  </p>
-</body>
-
-</html>
+{% block content %}
+<h2>Käyttäjä {{ user.username }}</h2>
+<p>
+  Käyttäjällä yhteensä {{ movies | count }} elokuvaa.
+</p>
+<h2>Elokuvat</h2>
+<ul>
+  {% for movie in movies %}
+  <li><a href="/movie/{{ movie.id }}">{{ movie.title }}</a></li>
+  {% endfor %}
+</ul>
+{% endblock %}

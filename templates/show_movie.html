@@ -1,57 +1,49 @@
-<!DOCTYPE html>
-<html>
+{% extends "layout.html" %}
 
-<head>
-  <title>{{ movie.title }}</title>
-</head>
+{% block title %}{{ movie.title }}{% endblock %}
 
-<body>
-  <h1>{{ movie.title }}</h1>
-    {% if session.user_id == movie.user_id %}
-  <p>
-    <a href="/edit_movie/{{ movie.id }}">Muokkaa</a>
-    <a href="/remove_movie/{{ movie.id }}">Poista</a>
-    <a href="/images/{{ movie.id }}">Kuvat</a>
-  </p>
-    {% endif %}
-    {% for image in images %}
-    <img src="/image/{{ image.id }}" />
-    {% endfor %}
-  <p>
-    Genre: {{ movie.genre }}
-  </p>
-  <p>
-    Kesto: {{ movie.duration }} min
-  </p>
-  <p>
-    Lisääjä: <a href="/user/{{ movie.user_id }}">{{ movie.username }}</a>
-  </p>
-  {% if classes %}
-  <p>
-    Luokat:
-    <ul>
-      {% for class in classes %}
-      <li>{{ class.title }}: {{ class.value }}</li>
-      {%  endfor %}
-    </ul>
-  </p>
+{% block content %}
+<h2>{{ movie.title }}</h2>
+  {% if session.user_id == movie.user_id %}
+<p>
+  <a href="/edit_movie/{{ movie.id }}">Muokkaa</a>
+  <a href="/remove_movie/{{ movie.id }}">Poista</a>
+  <a href="/images/{{ movie.id }}">Kuvat</a>
+</p>
   {% endif %}
-  <h2>Kommentit</h2>
+  {% for image in images %}
+  <img src="/image/{{ image.id }}" />
+  {% endfor %}
+<p>
+  Genre: {{ movie.genre }}
+</p>
+<p>
+  Kesto: {{ movie.duration }} min
+</p>
+<p>
+  Lisääjä: <a href="/user/{{ movie.user_id }}">{{ movie.username }}</a>
+</p>
+{% if classes %}
+<p>
+  Luokat:
   <ul>
-    {% for comment in comments %}
-    <li>{{ comment.comment }} , <a href="/user/{{ comment.user_id }}">{{ comment.username }}</a></li>
-    {% endfor %}
+    {% for class in classes %}
+    <li>{{ class.title }}: {{ class.value }}</li>
+    {%  endfor %}
   </ul>
-  <h2>Uusi kommentti</h2>
-  <form action="/create_comment" method="post">
-    Kommentti: <br />
-    <input type="text" name="comment" maxlength="50" required />
-    <input type="hidden" name="movie_id" value="{{ movie.id }}">
-    <input type="submit" value="Anna kommentti" />
-  </form>
-  <p>
-    <a href="/">Takaisin</a>
-  </p>
-</body>
-
-</html>
+</p>
+{% endif %}
+<h3>Kommentit</h3>
+<ul>
+  {% for comment in comments %}
+  <li>{{ comment.comment }} , <a href="/user/{{ comment.user_id }}">{{ comment.username }}</a></li>
+  {% endfor %}
+</ul>
+<h3>Uusi kommentti</h3>
+<form action="/create_comment" method="post">
+  Kommentti: <br />
+  <input type="text" name="comment" maxlength="50" required />
+  <input type="hidden" name="movie_id" value="{{ movie.id }}">
+  <input type="submit" value="Anna kommentti" />
+</form>
+{% endblock %}
