@@ -1,3 +1,4 @@
+import secrets
 import sqlite3
 from flask import Flask
 from flask import abort, make_response, redirect, render_template, request, session
@@ -12,6 +13,12 @@ app.secret_key = config.secret_key
 
 def require_login():
     if "user_id" not in session:
+        abort(403)
+
+def check_csrf():
+    if "csrf_token" not in request.form:
+        abort(403)
+    if request.form["csrf_token"] != session["csrf_token"]:
         abort(403)
 
 @app.route("/")
@@ -66,6 +73,7 @@ def new_movie():
 @app.route("/create_movie", methods=["GET", "POST"])
 def create_movie():
     require_login()
+    check_csrf()
 
     title = request.form["title"]
     if not title or len(title) > 50:
@@ -97,6 +105,7 @@ def create_movie():
 @app.route("/create_comment", methods=["GET", "POST"])
 def create_comment():
     require_login()
+    check_csrf()
 
     comment = request.form["comment"]
     if not comment or len(comment) > 50:
@@ -146,6 +155,7 @@ def edit_images(movie_id):
 @app.route("/add_image", methods=["POST"])
 def add_image():
     require_login()
+    check_csrf()
 
     movie_id = request.form["movie_id"]
     movie = movies.get_movie(movie_id)
@@ -168,6 +178,7 @@ def add_image():
 @app.route("/remove_images", methods=["POST"])
 def remove_images():
     require_login()
+    check_csrf()
 
     movie_id = request.form["movie_id"]
     movie = movies.get_movie(movie_id)
@@ -184,6 +195,8 @@ def remove_images():
 @app.route("/update_movie", methods=["POST"])
 def update_movie():
     require_login()
+    check_csrf()
+
     movie_id = request.form["movie_id"]
     movie = movies.get_movie(movie_id)
     if not movie:
@@ -220,6 +233,7 @@ def update_movie():
 @app.route("/remove_movie/<int:movie_id>", methods=["GET", "POST"])
 def remove_movie(movie_id):
     require_login()
+
     movie = movies.get_movie(movie_id)
     if not movie:
         abort(404)
@@ -230,6 +244,7 @@ def remove_movie(movie_id):
         return render_template("remove_movie.html", movie = movie)
 
     if request.method == "POST":
+        check_csrf()
         if "remove" in request.form:
             movies.remove_movie(movie_id)
             return redirect("/")
@@ -270,6 +285,7 @@ def login():
         if user_id:
             session["user_id"] = user_id
             session["username"] = username
+            session["csrf_token"] = secrets.token_hex(16)
             return redirect("/")
         else:
             return "VIRHE: väärä tunnus tai salasana"
