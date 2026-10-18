@@ -93,6 +93,10 @@ def update_movie(movie_id, title, genre, duration, classes):
         db.execute(sql, [movie_id, title, value])
 
 def remove_movie(movie_id):
+    sql = "DELETE FROM comments Where movie_id = ?"
+    db.execute(sql, [movie_id])
+    sql = "DELETE FROM images Where movie_id = ?"
+    db.execute(sql, [movie_id])
     sql = "DELETE FROM movie_classes Where movie_id = ?"
     db.execute(sql, [movie_id])
     sql = "DELETE FROM movies Where id = ?"
