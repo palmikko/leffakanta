@@ -33,8 +33,8 @@ def show_user(user_id):
     user = users.get_user(user_id)
     if not user:
         abort(404)
-    movies = users.get_movies(user_id)
-    return render_template("show_user.html", user=user, movies=movies)
+    user_movies = users.get_movies(user_id)
+    return render_template("show_user.html", user=user, movies=user_movies)
 
 @app.route("/find_movie")
 def find_movie():
@@ -54,7 +54,8 @@ def show_movie(movie_id):
     classes = movies.get_classes(movie_id)
     comments = movies.get_comments(movie_id)
     images = movies.get_images(movie_id)
-    return render_template("show_movie.html", movie=movie, classes=classes, comments=comments, images=images)
+    return render_template("show_movie.html", movie=movie, classes=classes,
+                           comments=comments, images=images)
 
 @app.route("/image/<int:image_id>")
 def show_image(image_id):
@@ -253,8 +254,7 @@ def remove_movie(movie_id):
         if "remove" in request.form:
             movies.remove_movie(movie_id)
             return redirect("/")
-        else:
-            return redirect("/movie/" + str(movie_id))
+        return redirect("/movie/" + str(movie_id))
 
 @app.route("/register")
 def register():

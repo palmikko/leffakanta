@@ -20,8 +20,8 @@ def add_movie(title, genre, duration, user_id, classes):
     movie_id = db.last_insert_id()
 
     sql = "INSERT INTO movie_classes (movie_id, title, value) VALUES (?, ?, ?)"
-    for title, value in classes:
-        db.execute(sql, [movie_id, title, value])
+    for class_title, class_value in classes:
+        db.execute(sql, [movie_id, class_title, class_value])
 
 def add_comment(movie_id, user_id, comment):
     sql = """INSERT INTO comments (movie_id, user_id, comment)
@@ -89,8 +89,8 @@ def update_movie(movie_id, title, genre, duration, classes):
     db.execute(sql, [movie_id])
 
     sql = "INSERT INTO movie_classes (movie_id, title, value) VALUES (?, ?, ?)"
-    for title, value in classes:
-        db.execute(sql, [movie_id, title, value])
+    for class_title, class_value in classes:
+        db.execute(sql, [movie_id, class_title, class_value])
 
 def remove_movie(movie_id):
     sql = "DELETE FROM comments Where movie_id = ?"
