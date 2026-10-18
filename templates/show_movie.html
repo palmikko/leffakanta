@@ -4,7 +4,7 @@
 
 {% block content %}
 <h2>{{ movie.title }}</h2>
-  {% if session.user_id == movie.user_id %}
+{% if session.user_id == movie.user_id %}
 <p>
   <a href="/edit_movie/{{ movie.id }}">Muokkaa</a>
   <a href="/remove_movie/{{ movie.id }}">Poista</a>
@@ -39,6 +39,7 @@
   <li>{{ comment.comment }} , <a href="/user/{{ comment.user_id }}">{{ comment.username }}</a></li>
   {% endfor %}
 </ul>
+{% if session.user_id %}
 <h3>Uusi kommentti</h3>
 <form action="/create_comment" method="post">
   Kommentti: <br />
@@ -47,4 +48,5 @@
   <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
   <input type="submit" value="Anna kommentti" />
 </form>
+{% endif %}
 {% endblock %}
