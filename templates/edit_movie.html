@@ -3,7 +3,8 @@
 {% block title %}Muokkaa elokuvan tietoja{% endblock %}
 
 {% block content %}
-<h2>Muokkaa elokuvan tietoja</h2>
+<h2>{{ movie.title }}</h2>
+<h3>Elokuvan muokkaus</h3>
 <form action="/update_movie" method="post">
   <p>
     Elokuvan nimi: <br />
@@ -36,4 +37,7 @@
   <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
   <input type="submit" value="Päivitä tiedot" />
 </form>
+<p>
+  <a href="/movie/{{ movie.id }}">Takaisin elokuvaan</a>
+</p>
 {% endblock %}
