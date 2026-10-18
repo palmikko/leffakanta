@@ -57,7 +57,12 @@ def get_classes(movie_id):
     return db.query(sql, [movie_id])
 
 def get_movies():
-    sql = "SELECT id, title FROM movies ORDER BY id DESC"
+    sql = """SELECT movies.id, movies.title, users.id user_id, users.username,
+                    COUNT(comments.id) comment_count
+             FROM movies JOIN users ON movies.user_id = users.id
+                         LEFT JOIN comments ON movies.id = comments.movie_id
+             GROUP BY movies.id
+             ORDER BY movies.id DESC"""
     return db.query(sql)
 
 def get_movie(movie_id):
