@@ -6,21 +6,21 @@
 <h2>Lisää elokuva</h2>
 <form action="/create_movie" method="post">
   <p>
-    Elokuvan nimi: <br />
-    <input type="text" name="title" maxlength="50" required />
+    <label for="title">Elokuvan nimi:</label> <br />
+    <input type="text" name="title" id="title" maxlength="50" required />
   </p>
   <p>
-    Genre: <br />
-    <input type="text" name="genre" maxlength="50" required />
+    <label for="genre">Genre:</label> <br />
+    <input type="text" name="genre" id="genre" maxlength="50" required />
   </p>
   <p>
-    Kesto minuutteina: <br />
-    <input type="number" name="duration" required />
+    <label for="duration">Kesto minuutteina:</label> <br />
+    <input type="number" name="duration" id="duration" required />
   </p>
   {% for class in classes %}
   <p>
-    {{ class }}: <br />
-    <select name="classes">
+    <label for="class{{ class }}">{{ class }}:</label> <br />
+    <select name="classes" id="class{{ class }}">
       <option value="">(valitse)</option>
     {% for option in classes[class] %}
       <option value="{{ class }}:{{ option }}">{{ option }}</option>

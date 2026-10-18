@@ -42,8 +42,8 @@
 {% if session.user_id %}
 <h3>Uusi kommentti</h3>
 <form action="/create_comment" method="post">
-  Kommentti: <br />
-  <input type="text" name="comment" maxlength="50" required />
+  <label for="comment">Kommentti:</label> <br />
+  <input type="text" name="comment" id="comment" maxlength="50" required />
   <input type="hidden" name="movie_id" value="{{ movie.id }}">
   <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
   <input type="submit" value="Anna kommentti" />
