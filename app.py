@@ -100,7 +100,8 @@ def create_movie():
 
     movies.add_movie(title, genre, duration, user_id, classes)
 
-    return redirect("/")
+    movie_id = db.last_insert_id()
+    return redirect("/movie/" + str(movie_id))
 
 @app.route("/create_comment", methods=["GET", "POST"])
 def create_comment():
